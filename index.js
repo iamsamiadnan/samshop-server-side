@@ -31,12 +31,29 @@ async function run() {
     // Send a ping to confirm a successful connection
     const database = client.db("shop");
     const brandsCollection = database.collection("brands");
+    const productsCollection = database.collection("products");
   
     app.get('/brands', async (req, res) => {
 
         const cursor = brandsCollection.find()
         const result = await cursor.toArray()
         res.send(result)
+    })
+
+    app.get('/products', async (req, res) => {
+
+      const cursor = productsCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+  })
+
+    app.post('/addProducts', async (req, res) => {
+      const product = req.body;
+      product._bid = new ObjectId(product._bid)
+      console.log(product)
+      const result = await productsCollection.insertOne(product);
+
+      res.send(result)
     })
 
     // app.get('/users/:id', async (req, res) => {
@@ -64,12 +81,7 @@ async function run() {
     //   res.send(result)
     // })
 
-    // app.post('/users', async (req, res) => {
-    //     const user = req.body;
-    //    const result = await collection.insertOne(user);
-
-    //     res.send(result)
-    // })
+    
 
     // app.delete('/users/:uid', async (req, res) => {
     //     const uid = req.params.uid;
