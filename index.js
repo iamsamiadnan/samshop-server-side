@@ -45,11 +45,39 @@ async function run() {
       const cursor = productsCollection.find()
       const result = await cursor.toArray()
       res.send(result)
-  })
+    })
+
+    app.get('/products/flashsales', async (req, res) => {
+
+      const query = { flash_sale: true }
+      const cursor = productsCollection.find(query)
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+
+    app.get('/products/single/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      console.log(query)
+      const result = await productsCollection.findOne(query)
+      console.log(result)
+      res.send(result)
+    })
+
+
+
+  app.get('/products/:brand', async (req, res) => {
+    const param = req.params.brand.toLowerCase();
+    
+    const query = { brand: param }
+    const cursor = productsCollection.find(query)
+    const result = await cursor.toArray()
+    res.send(result)
+})
 
     app.post('/addProducts', async (req, res) => {
       const product = req.body;
-      product._bid = new ObjectId(product._bid)
       console.log(product)
       const result = await productsCollection.insertOne(product);
 
