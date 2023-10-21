@@ -132,12 +132,16 @@ async function run() {
 
     
 
-    // app.delete('/users/:uid', async (req, res) => {
-    //     const uid = req.params.uid;
-    //     const query = {_id: new ObjectId(uid)}
-    //     const result = await collection.deleteOne(query)
-    //     res.send(result)
-    // })
+    app.delete('/products/:id/:uid', async (req, res) => {
+        const id = req.params.id;
+        const uid = req.params.uid;
+
+        const query = {_pid: new ObjectId(id), _uid: uid}
+
+        console.log(query)
+        const result = await cartsCollection.deleteOne(query)
+        res.send(result)
+    })
 
 
     await client.db("admin").command({ ping: 1 });
