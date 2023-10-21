@@ -9,8 +9,6 @@ app.use(express.json())
 
 
 
-
-
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nkjseli.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -60,9 +58,9 @@ async function run() {
     app.get('/products/single/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
-      console.log(query)
+
       const result = await productsCollection.findOne(query)
-      console.log(result)
+   
       res.send(result)
     })
 
@@ -90,7 +88,7 @@ async function run() {
 
     app.post('/addProducts', async (req, res) => {
       const product = req.body;
-      console.log(product)
+
       const result = await productsCollection.insertOne(product);
 
       res.send(result)
@@ -99,19 +97,13 @@ async function run() {
     app.post('/addToCart', async (req, res) => {
       const product = req.body;
       product._pid = new ObjectId(product._pid)
-      console.log(product)
+
       const result = await cartsCollection.insertOne(product);
 
       res.send(result)
     })
 
-    // app.get('/users/:id', async (req, res) => {
-    //     const id = req.params.id;
-    //     const query = {_id: new ObjectId(id)}
-    //     const user = await collection.findOne(query)
-    //     res.send(user)
-
-    // })
+  
 
     app.put('/products/:id', async (req, res) => {
       const id = req.params.id;
@@ -132,7 +124,7 @@ async function run() {
         }
       }
 
-      console.log("Muhaha=>>>", filter, updatedProduct)
+   
       const result = await productsCollection.updateOne(filter, updatedProduct, options)
       res.send(result)
     })
@@ -145,7 +137,7 @@ async function run() {
 
         const query = {_pid: new ObjectId(id), _uid: uid}
 
-        console.log(query)
+      
         const result = await cartsCollection.deleteOne(query)
         res.send(result)
     })
