@@ -113,22 +113,29 @@ async function run() {
 
     // })
 
-    // app.put('/users/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   const user = req.body;
+    app.put('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      const product = req.body;
 
-    //   const filter = { _id: new ObjectId(id)}
-    //   const options = { upsert: true}
-    //   const updatedUser = {
-    //     $set: {
-    //       name: user.name,
-    //       email: user.email
-    //     }
-    //   }
+      const filter = { _id: new ObjectId(id)}
+      const options = { upsert: false}
+      const updatedProduct = {
+        $set: {
+          image_url: product.image_url,
+          name: product.name,
+          brand: product.brand,
+          category:product.category ,
+          price:product.price,
+          desc:product.desc,
+          ratings:product.ratings,
+          flash_sale: false
+        }
+      }
 
-    //   const result = await collection.updateOne(filter, updatedUser, options)
-    //   res.send(result)
-    // })
+      console.log("Muhaha=>>>", filter, updatedProduct)
+      const result = await productsCollection.updateOne(filter, updatedProduct, options)
+      res.send(result)
+    })
 
     
 
