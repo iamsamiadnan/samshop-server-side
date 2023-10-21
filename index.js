@@ -32,6 +32,7 @@ async function run() {
     const database = client.db("shop");
     const brandsCollection = database.collection("brands");
     const productsCollection = database.collection("products");
+    const cartsCollection = database.collection("carts");
   
     app.get('/brands', async (req, res) => {
 
@@ -76,10 +77,30 @@ async function run() {
     res.send(result)
 })
 
+
+  app.get('/products/cart/:id', async (req, res) => {
+    const param = req.params.id;
+    
+    const query = { _uid: parseInt(param) }
+    const cursor = cartsCollection.find(query)
+    const result = await cursor.toArray()
+    res.send(result)
+  })
+
+
     app.post('/addProducts', async (req, res) => {
       const product = req.body;
       console.log(product)
       const result = await productsCollection.insertOne(product);
+
+      res.send(result)
+    })
+
+    app.post('/addToCart', async (req, res) => {
+      const product = req.body;
+      product._pid = new ObjectId(product._pid)
+      console.log(product)
+      const result = await cartsCollection.insertOne(product);
 
       res.send(result)
     })
