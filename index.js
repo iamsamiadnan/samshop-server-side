@@ -81,7 +81,7 @@ async function run() {
   app.get('/products/cart/:id', async (req, res) => {
     const param = req.params.id;
     
-    const query = { _uid: parseInt(param) }
+    const query = { _uid: param }
     const cursor = cartsCollection.find(query)
     const result = await cursor.toArray()
     res.send(result)
